@@ -1,0 +1,120 @@
+"Var1","Var2","Freq"
+"Donor1","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",6.83
+"Donor2","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",10.143
+"Donor3","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",9.917
+"Donor4","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",3.975
+"Donor5","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",9.335
+"Donor6","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",6.88
+"Donor7","Activated CD4 / Treg-like (TNFRSF4/TNFRSF18/CTLA4/ICOS/IL2RA+)",9.567
+"Donor1","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",6.83
+"Donor2","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",9.119
+"Donor3","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",6.446
+"Donor4","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",3.975
+"Donor5","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",7.709
+"Donor6","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",3.413
+"Donor7","Activated T (TNFRSF4/BATF/ICOS/LEF1+)",6.047
+"Donor1","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",1.921
+"Donor2","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",4.201
+"Donor3","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",6.694
+"Donor4","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",18.571
+"Donor5","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",1.414
+"Donor6","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",2.492
+"Donor7","Activated/Class-switched B (IGHA1/TNFRSF13B/C+)",9.116
+"Donor1","B cells (BANK1/BLK/VPREB3+ subset)",0.32
+"Donor2","B cells (BANK1/BLK/VPREB3+ subset)",2.254
+"Donor3","B cells (BANK1/BLK/VPREB3+ subset)",3.554
+"Donor4","B cells (BANK1/BLK/VPREB3+ subset)",10.683
+"Donor5","B cells (BANK1/BLK/VPREB3+ subset)",0.778
+"Donor6","B cells (BANK1/BLK/VPREB3+ subset)",0.975
+"Donor7","B cells (BANK1/BLK/VPREB3+ subset)",3.52
+"Donor1","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",1.281
+"Donor2","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",4.201
+"Donor3","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",9.752
+"Donor4","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",31.677
+"Donor5","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",1.768
+"Donor6","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",4.767
+"Donor7","B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",10.379
+"Donor1","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",12.273
+"Donor2","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",20.184
+"Donor3","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",5.62
+"Donor4","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",4.534
+"Donor5","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",7.143
+"Donor6","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",4.28
+"Donor7","CXCL13+ CD4 T (CXCL13/TOX2+; TLS-like)",4.783
+"Donor1","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",27.641
+"Donor2","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",12.398
+"Donor3","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",14.463
+"Donor4","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",5.031
+"Donor5","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",4.738
+"Donor6","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",3.196
+"Donor7","Cytotoxic CD8 T (CD8A/CD8B/NKG7/CCL5; LAG3+)",6.498
+"Donor1","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",12.38
+"Donor2","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",10.143
+"Donor3","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",10.496
+"Donor4","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",5.528
+"Donor5","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",2.405
+"Donor6","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",4.117
+"Donor7","Cytotoxic CD8/NK-like T (CD8/IFNG/NKG7/CCL5+)",3.7
+"Donor1","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",0
+"Donor2","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",0.615
+"Donor3","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",0.248
+"Donor4","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",0.062
+"Donor5","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",0.424
+"Donor6","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",5.146
+"Donor7","FCGR3A+ MARCO+ myeloid (SIGLEC10/LILRA5+)",0.09
+"Donor1","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",1.387
+"Donor2","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",4.406
+"Donor3","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",5.041
+"Donor4","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",1.242
+"Donor5","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",7.001
+"Donor6","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",25.406
+"Donor7","FCGR3A+ Mono/Mac (CD14/FCGR3A/CCL18/MARCO+)",2.708
+"Donor1","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",4.269
+"Donor2","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",1.434
+"Donor3","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",3.471
+"Donor4","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",2.919
+"Donor5","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",22.207
+"Donor6","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",5.634
+"Donor7","FOLR2+ Macrophages (FOLR2/SELENOP/APOE+)",8.123
+"Donor1","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",7.791
+"Donor2","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",12.295
+"Donor3","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",8.595
+"Donor4","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",5.031
+"Donor5","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",6.648
+"Donor6","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",5.255
+"Donor7","IL7R+ CD4 T (IL7R/KLRB1/RORA; memory-like)",6.047
+"Donor1","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",7.577
+"Donor2","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",4.918
+"Donor3","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",8.595
+"Donor4","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",2.298
+"Donor5","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",23.55
+"Donor6","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",15.547
+"Donor7","Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",24.458
+"Donor1","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",2.241
+"Donor2","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",1.23
+"Donor3","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",4.38
+"Donor4","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",3.043
+"Donor5","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",3.96
+"Donor6","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",5.363
+"Donor7","MARCO+ Macrophages (MARCO/NR1H3/APOC2/MSR1+)",2.256
+"Donor1","NK cells (KIR/KLRC/NCAM1/GNLY+)",3.095
+"Donor2","NK cells (KIR/KLRC/NCAM1/GNLY+)",0.102
+"Donor3","NK cells (KIR/KLRC/NCAM1/GNLY+)",0.165
+"Donor4","NK cells (KIR/KLRC/NCAM1/GNLY+)",0.435
+"Donor5","NK cells (KIR/KLRC/NCAM1/GNLY+)",0.212
+"Donor6","NK cells (KIR/KLRC/NCAM1/GNLY+)",4.767
+"Donor7","NK cells (KIR/KLRC/NCAM1/GNLY+)",0.451
+"Donor1","pDC (SCT/CLEC4C/LILRA4+)",2.348
+"Donor2","pDC (SCT/CLEC4C/LILRA4+)",0.922
+"Donor3","pDC (SCT/CLEC4C/LILRA4+)",2.149
+"Donor4","pDC (SCT/CLEC4C/LILRA4+)",0.807
+"Donor5","pDC (SCT/CLEC4C/LILRA4+)",0.212
+"Donor6","pDC (SCT/CLEC4C/LILRA4+)",2.329
+"Donor7","pDC (SCT/CLEC4C/LILRA4+)",1.354
+"Donor1","γδ T cells (TRDC/TRGC2+)",1.814
+"Donor2","γδ T cells (TRDC/TRGC2+)",1.434
+"Donor3","γδ T cells (TRDC/TRGC2+)",0.413
+"Donor4","γδ T cells (TRDC/TRGC2+)",0.186
+"Donor5","γδ T cells (TRDC/TRGC2+)",0.495
+"Donor6","γδ T cells (TRDC/TRGC2+)",0.433
+"Donor7","γδ T cells (TRDC/TRGC2+)",0.903

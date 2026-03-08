@@ -1,0 +1,22 @@
+# ── Data files (large, not tracked) ──
+*.h5
+*.hdf5
+*.rds
+*.RDS
+RUN_*/
+
+# ── R project files ──
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+
+# ── Temporary ──
+*~
+*.swp
+*.tmp
