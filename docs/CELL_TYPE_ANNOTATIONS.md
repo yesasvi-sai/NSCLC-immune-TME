@@ -1,4 +1,4 @@
-# Cell Type Annotation Evidence
+# Cell Type Annotation 
 
 Per-cluster annotation rationale for the 18 immune populations and 3 removed contamination clusters. All labels are based on convergent evidence from FindAllMarkers, RNA DotPlot, ADT DotPlot, and FeaturePlot localization.
 
