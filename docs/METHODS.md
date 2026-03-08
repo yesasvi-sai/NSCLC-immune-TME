@@ -55,6 +55,4 @@ Three contamination clusters removed: endothelial (HSPG2/COL4A1/CAV1), epithelia
 
 A myeloid-leak module (12 genes: LYZ, LST1, TYROBP, FCER1G, AIF1, S100A8/A9, FCN1, C1QA/B/C, APOE) is scored in T cells. Cells above median + 2×SD are removed. Statistical results shift after correction, validating this step.
 
-## Step 18 – Final Outputs
 
-All publication-quality plots and CSV tables are generated from the leak-corrected object and saved to `FINAL_PLOTS_STEP18/`.
