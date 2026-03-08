@@ -1,10 +1,6 @@
 # Donor-to-Donor Variation in the NSCLC Immune Microenvironment Using Joint RNA + Surface-Protein Profiling
 
-[![R](https://img.shields.io/badge/R-%3E%3D4.3-blue.svg)](https://www.r-project.org/)
-[![Seurat](https://img.shields.io/badge/Seurat-v5-green.svg)](https://satijalab.org/seurat/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-> **Single-cell multi-modal (RNA + ADT) analysis of 9,103 immune cells across 7 NSCLC donors, revealing myeloid functional heterogeneity as the dominant axis of patient-to-patient variation in the tumor immune microenvironment.**
+> ****Single-cell multi-modal (RNA + ADT) analysis of 9,103 immune cells across 7 NSCLC donors, revealing myeloid functional heterogeneity as the dominant axis of patient-to-patient variation in the tumor immune microenvironment.****
 
 ---
 
