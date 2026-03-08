@@ -28,7 +28,7 @@
 
 ---
 
-## Pipeline at a Glance
+## Pipeline
 
 This project implements an **18-step computational pipeline** in a single, self-contained R script:
 
