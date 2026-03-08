@@ -28,25 +28,15 @@
 
 ---
 
-## Pipeline
+Dataset
+10x Genomics 20k NSCLC DTC 3' NextGEM — 7 donors, paired RNA + ADT (CD45, CD3, CD4, CD8, CD14, CD11c, CD16, CD56, CD19). Publicly available at 10xgenomics.com/datasets.
 
-This project implements an **18-step computational pipeline** in a single, self-contained R script:
-
-```
- DATA LOADING          IMMUNE EXTRACTION         ANNOTATION              FUNCTIONAL ANALYSIS
- ─────────────         ─────────────────         ──────────              ───────────────────
- Step 1: Load 7        Step 6: Marker scan       Step 10: RNA + ADT      Step 14: Module scoring
-   donors (HDF5)         (PTPRC vs EPCAM)          DotPlot validation      (5 gene programs)
- Step 2: QC filter     Step 7: Immune WNN        Step 11: FindAllMarkers  Step 15: Single-gene
- Step 3: RNA PCA         reprocessing              + labeling               validation
- Step 4: ADT APCA      Step 8: scDblFinder       Step 12: Remove          Step 16: Myeloid-leak QC
- Step 5: WNN UMAP        doublet removal           contamination          Step 17: Leak correction
-   + clustering        Step 9: Singlet WNN                                Step 18: Final figures
-                         reprocessing                                       + statistics
-```
-
-Every step produces checkpoint outputs (plots + tables) so results are fully traceable.
-
+Pipeline
+The R script (analysis/NSCLC_immune_pipeline.R) running 18 sequential steps:
+Steps 1–5: Load 7 donors → QC filter → RNA PCA (30 PCs) → ADT CLR + APCA (5 PCs) → WNN integration + UMAP + clustering
+Steps 6–9: Immune subset extraction (PTPRC+ / EPCAM−) → Immune WNN reprocessing → scDblFinder doublet removal → Singlet reprocessing
+Steps 10–12: RNA + ADT marker validation → FindAllMarkers + evidence-based annotation → Non-immune contamination removal (endothelial, epithelial, neuroendocrine clusters)
+Steps 14–18: Module scoring (5 gene programs) → Single-gene validation → Myeloid-leak QC in T cells → Leak correction → Final figures + Kruskal–Wallis statistics
 ---
 
 ## Key Results
