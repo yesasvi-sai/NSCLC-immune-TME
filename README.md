@@ -1,6 +1,6 @@
 # Donor-to-Donor Variation in the NSCLC Immune Microenvironment Using Joint Single-Cell RNA and Surface-Protein Data
 
-Single-cell multi-modal analysis (RNA + ADT surface protein) of 9,103 immune cells across 7 NSCLC donors. We use Weighted Nearest Neighbor (WNN) integration in Seurat v5 to identify 18 immune cell populations and reveal that myeloid functional heterogeneity is the dominant axis of patient-to-patient variation in the tumor immune microenvironment.
+Single-cell multi-modal analysis (RNA + ADT surface protein) of 9,103 immune cells across 7 NSCLC donors. Used Weighted Nearest Neighbor (WNN) integration in Seurat v5 to identify 18 immune cell populations and reveal that myeloid functional heterogeneity is the dominant axis of patient-to-patient variation in the tumor immune microenvironment.
 
 ---
 
