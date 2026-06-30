@@ -34,9 +34,9 @@ h5_files <- list.files(getwd(), pattern = "donor_[1-7]_count_sample_feature_bc_m
 cat("Found donor h5 files:", length(h5_files), "\n")
 print(h5_files)
 stopifnot(length(h5_files) == 7)
-# ============================
+
 # STEP 1: Load donors + merge
-# ============================
+
 
 donor_list <- list()
 
@@ -63,7 +63,7 @@ for (i in 1:7) {
     min.features = 200
   )
   
-  # ADT optional (but expected in this dataset)
+  # ADT 
   if ("Antibody Capture" %in% names(data)) {
     adt_counts <- data$`Antibody Capture`
     common <- intersect(colnames(obj), colnames(adt_counts))
@@ -102,19 +102,16 @@ cat("\nMerged object cells:", ncol(nsclc), "\n")
 cat("Donor distribution:\n")
 print(table(nsclc$donor))
 
-# Save checkpoint (inside this RUN folder)
+# Save checkpoint 
 saveRDS(nsclc, file = file.path(OUTDIR, "STEP1_nsclc_merged_raw.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP1_nsclc_merged_raw.rds"), "\n")
-# ============================
-# STEP 2: QC + filtering
-# ============================
 
-# Load checkpoint (safety)
+# STEP 2: QC + filtering
+# Load 
 nsclc <- readRDS(file.path(OUTDIR, "STEP1_nsclc_merged_raw.rds"))
 
 DefaultAssay(nsclc) <- "RNA"
 
-# Join layers ONCE after merge (Seurat v5 best practice)
 nsclc <- JoinLayers(nsclc)
 
 # QC metrics
@@ -139,7 +136,6 @@ p_qc <- VlnPlot(
 print(p_qc)
 save_plot(p_qc, "STEP2_QC_violin_by_donor.png", w=14, h=4.5)
 
-# Apply your filter thresholds (same as before)
 nsclc_filt <- subset(
   nsclc,
   subset = nFeature_RNA > 200 &
@@ -157,9 +153,9 @@ nsclc_filt <- JoinLayers(nsclc_filt)
 # Save checkpoint
 saveRDS(nsclc_filt, file = file.path(OUTDIR, "STEP2_nsclc_filtered.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP2_nsclc_filtered.rds"), "\n")
-# ============================
+
 # STEP 3: RNA preprocessing + PCA
-# ============================
+
 
 nsclc <- readRDS(file.path(OUTDIR, "STEP2_nsclc_filtered.rds"))
 DefaultAssay(nsclc) <- "RNA"
@@ -185,12 +181,11 @@ save_plot(p_elbow, "STEP3_RNA_PCA_elbow.png", w=7, h=5)
 saveRDS(nsclc, file = file.path(OUTDIR, "STEP3_nsclc_RNA_PCA.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP3_nsclc_RNA_PCA.rds"), "\n")
 
-# Quick sanity
 cat("Top HVGs:", paste(head(VariableFeatures(nsclc), 10), collapse = ", "), "\n")
 cat("PCA dims:", ncol(Embeddings(nsclc, 'pca')), "\n")
-# ============================
+
 # STEP 4: ADT preprocessing + APCA
-# ============================
+
 
 nsclc <- readRDS(file.path(OUTDIR, "STEP3_nsclc_RNA_PCA.rds"))
 stopifnot("ADT" %in% names(nsclc@assays))
@@ -223,16 +218,14 @@ saveRDS(nsclc, file = file.path(OUTDIR, "STEP4_nsclc_ADT_APCA.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP4_nsclc_ADT_APCA.rds"), "\n")
 cat("ADT npcs used:", adt_npcs, "\n")
 cat("ADT features:", nrow(nsclc[["ADT"]]), "\n")
-# ============================
+
 # STEP 5: WNN (RNA + ADT) → UMAP → clusters
-# ============================
 
 nsclc <- readRDS(file.path(OUTDIR, "STEP4_nsclc_ADT_APCA.rds"))
 
-# CRITICAL: switch back to RNA before WNN
+#  switch back to RNA before WNN
 DefaultAssay(nsclc) <- "RNA"
 
-# Use fixed dimensions (stable + standard)
 rna_dims <- 1:30
 adt_dims <- 1:5
 
@@ -261,7 +254,7 @@ nsclc <- FindClusters(
   verbose = FALSE
 )
 
-# Sanity + plots
+#  plots
 cat("Cells:", ncol(nsclc), "\n")
 cat("Clusters:", length(unique(nsclc$seurat_clusters)), "\n")
 print(table(nsclc$seurat_clusters))
@@ -275,14 +268,14 @@ print(p1 + p2)
 # Save checkpoint
 saveRDS(nsclc, file = file.path(OUTDIR, "STEP5_nsclc_WNN.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP5_nsclc_WNN.rds"), "\n")
-# ============================
+
 # STEP 6: Immune vs non-immune marker scan + immune subset
-# ============================
+
 
 nsclc <- readRDS(file.path(OUTDIR, "STEP5_nsclc_WNN.rds"))
 DefaultAssay(nsclc) <- "RNA"
 
-# Quick marker panel (broad, not over-specific)
+# Quick marker panel 
 immune_markers   <- c("PTPRC","CD3D","CD3E","TRAC","CD8A","CD4","NKG7","GNLY","MS4A1","CD79A","LYZ","S100A8","FCGR3A")
 epithelial_markers <- c("EPCAM","KRT8","KRT18","KRT19","ALDH1A1","MSLN")
 endothelial_markers <- c("PECAM1","VWF","KDR")
@@ -297,7 +290,7 @@ p_dot <- DotPlot(
 print(p_dot)
 save_plot(p_dot, "STEP6_marker_dotplot.png", w=16, h=6)
 
-# OPTIONAL: also a quick FeaturePlot sanity for PTPRC and EPCAM
+
 p_fp <- FeaturePlot(nsclc, features = c("PTPRC","EPCAM"), reduction = "wnn.umap", ncol = 2)
 print(p_fp)
 save_plot(p_fp, "feature_PTPRC_EPCAM.png", w=10, h=4)
@@ -305,7 +298,7 @@ save_plot(p_fp, "feature_PTPRC_EPCAM.png", w=10, h=4)
 nsclc <- readRDS(file.path(OUTDIR, "STEP5_nsclc_WNN.rds"))
 DefaultAssay(nsclc) <- "RNA"
 
-# Immune clusters from Step 6 dotplot
+# Immune clusters 
 immune_clusters <- c(0, 1, 2, 3, 4, 8, 11, 12, 15, 19, 21)
 
 # Safety checks
@@ -319,13 +312,13 @@ cat("Immune cells extracted:", ncol(immune), "out of", ncol(nsclc), "\n")
 
 saveRDS(immune, file = file.path(OUTDIR, "STEP6_immune_rawsubset.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP6_immune_rawsubset.rds"), "\n")
-# ============================
+
 # STEP 7) Immune reprocessing (pre-doublet) with WNN
-# ============================
+
 
 immune <- readRDS(file.path(OUTDIR, "STEP6_immune_rawsubset.rds"))
 
-# keep Seurat v5 layers consistent
+# Seurat v5 layers consistent
 immune <- JoinLayers(immune)
 
 # ---- RNA side ----
@@ -375,7 +368,7 @@ immune <- FindClusters(
   verbose    = FALSE
 )
 
-# ---- plot + checkpoint ----
+# plot
 p_immune <- DimPlot(immune, reduction = "wnn.umap", label = TRUE, repel = TRUE) +
   ggtitle("Immune subclusters (pre-doublet)")
 print(p_immune)
@@ -435,18 +428,17 @@ saveRDS(immune_singlets, file = file.path(OUTDIR, "STEP8_immune_singlets_raw.rds
 cat("Saved:\n  -", file.path(OUTDIR, "STEP8_immune_withDoublets.rds"),
     "\n  -", file.path(OUTDIR, "STEP8_immune_singlets_raw.rds"), "\n")
 
-# Quick plot (optional)
+# Quick plot 
 p_dbl <- DimPlot(immune, reduction = "wnn.umap", group.by = "doublet_class") +
   ggtitle("Immune doublets (scDblFinder)")
 print(p_dbl)
 save_plot(p_dbl, "STEP8_immune_doublet_class_umap.png", w=10, h=6)
-# ============================
+
 # STEP 9) Reprocess immune singlets (RNA + ADT WNN)
-# ============================
+
 
 immune_singlets <- readRDS(file.path(OUTDIR, "STEP8_immune_singlets_raw.rds"))
 
-# keep Seurat v5 layers consistent
 immune_singlets <- JoinLayers(immune_singlets)
 
 # ---- RNA preprocessing ----
@@ -509,9 +501,9 @@ save_plot(p_clean, "STEP9_immune_singlets_clean_umap.png", w=10, h=6)
 
 saveRDS(immune_singlets, file = file.path(OUTDIR, "STEP9_immune_singlets_clean.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP9_immune_singlets_clean.rds"), "\n")
-# ============================
+
 # STEP 10) Immune annotation markers (RNA + ADT validation)
-# ============================
+
 
 immune_singlets <- readRDS(file.path(OUTDIR, "STEP9_immune_singlets_clean.rds"))
 immune_singlets <- JoinLayers(immune_singlets)
@@ -593,7 +585,7 @@ save_plot(p_fp, "STEP10_immune_featureplots_RNA.png", w=14, h=8)
 saveRDS(immune_singlets, file = file.path(OUTDIR, "STEP10_immune_markers_checked.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP10_immune_markers_checked.rds"), "\n")
 # ----------------------------
-# STEP 11) Immune cluster markers + labeling (EVIDENCE-BASED)
+# STEP 11) Immune cluster markers + labeling 
 # ----------------------------
 immune <- readRDS(file.path(OUTDIR, "STEP10_immune_markers_checked.rds"))
 immune <- JoinLayers(immune)
@@ -612,14 +604,14 @@ markers_imm <- FindAllMarkers(
 write.csv(markers_imm, file.path(OUTDIR, "STEP11_immune_FindAllMarkers.csv"), row.names = FALSE)
 cat("Saved:", file.path(OUTDIR, "STEP11_immune_FindAllMarkers.csv"), "\n")
 
-# 11B) Print top markers per cluster (quick evidence view)
+# 11B) Print top markers per cluster 
 top10 <- markers_imm %>%
   group_by(cluster) %>%
   slice_max(order_by = avg_log2FC, n = 10)
 
 print(top10 %>% select(cluster, gene, avg_log2FC, pct.1, pct.2))
 
-# 11C) Create a draft label map (YOU will finalize after seeing top10)
+# 11C) Create a draft label map 
 cluster_to_label <- c(
   "0"  = "Inflammatory/Classical Monocytes (S100A8/S100A9/FCN1/VCAN+)",
   "1"  = "B cells (FCRL/BANK1/MS4A1/EBF1+; memory-like)",
@@ -662,16 +654,13 @@ save_plot(p_lab, "STEP11_immune_labeled_umap.png", w=12, h=7)
 saveRDS(immune, file.path(OUTDIR, "STEP11_immune_labeled.rds"))
 cat("Saved:", file.path(OUTDIR, "STEP11_immune_labeled.rds"), "\n")
 
+# STEP 12) Remove non-immune contamination 
 
-
-# ----------------------------
-# STEP 12) Remove non-immune contamination (10/14/15) + save clean immune object
-# ----------------------------
 immune <- readRDS(file.path(OUTDIR, "STEP11_immune_labeled.rds"))
 immune <- JoinLayers(immune)
 Idents(immune) <- "seurat_clusters"
 
-# Remove these clusters (you labeled them as non-immune)
+
 non_immune_clusters <- c("11","14","15")
 
 cat("Cells BEFORE:", ncol(immune), "\n")
@@ -701,12 +690,11 @@ p_clean <- DimPlot(
 
 print(p_clean)
 save_plot(p_clean, "STEP12_immune_clean_labeled_umap.png", w=12, h=7)
-# ----------------------------
+
 # STEP 13) Immune composition by donor (counts + proportions + plot)
-# ----------------------------
+
 immune_clean <- readRDS(file.path(OUTDIR, "STEP12_immune_clean_labeled.rds"))
 
-# Sanity checks
 stopifnot("donor" %in% colnames(immune_clean@meta.data))
 stopifnot("cell_type" %in% colnames(immune_clean@meta.data))
 
@@ -741,13 +729,11 @@ p_comp <- ggplot(comp_df, aes(x = Donor, y = Percent, fill = CellType)) +
 print(p_comp)
 save_plot(p_comp, "STEP13_immune_composition_by_donor.png", w=12, h=7)
 
-# Quick summary (optional, but useful)
 cat("\nCells per donor (immune_clean):\n")
 print(table(immune_clean$donor))
 
-# ============================
-# STEP14_A) Option A: Donor immune state scores (RNA) + plots
-# ============================
+
+# STEP14_A)  Donor immune state scores (RNA) + plots
 
 
 # Load your clean immune object
@@ -755,7 +741,7 @@ immune_clean <- readRDS(file.path(OUTDIR, "STEP12_immune_clean_labeled.rds"))
 immune_clean <- JoinLayers(immune_clean)
 DefaultAssay(immune_clean) <- "RNA"
 
-# Safety checks (NO assumptions)
+# Safety checks 
 stopifnot("donor" %in% colnames(immune_clean@meta.data))
 stopifnot("cell_type" %in% colnames(immune_clean@meta.data))
 stopifnot("wnn.umap" %in% Reductions(immune_clean))
@@ -764,9 +750,9 @@ cat("Cells:", ncol(immune_clean), "\n")
 cat("Donors:", paste(unique(immune_clean$donor), collapse = ", "), "\n")
 cat("Cell types:", length(unique(immune_clean$cell_type)), "\n")
 
-# ----------------------------
+
 # 14A) Define immune gene programs (RNA)
-# ----------------------------
+
 gene_sets <- list(
   CYTOTOXICITY = c("NKG7","GNLY","PRF1","GZMB","GZMH","CTSW","FCGR3A","CCL5"),
   EXHAUSTION   = c("PDCD1","LAG3","HAVCR2","TIGIT","CTLA4","TOX"),
@@ -818,25 +804,24 @@ pct_check %>%
   dplyr::slice_head(n=3) %>%
   print(n=200)
 
-# Keep only genes that exist in dataset (important and honest)
+# Keep only genes that exist in dataset 
 gene_sets <- lapply(gene_sets, function(g) intersect(g, rownames(immune_clean)))
 print(sapply(gene_sets, length))
 
-# Require at least 4 genes per set to score (prevents junk)
+# Require at least 4 genes per set to score 
 keep_sets <- names(gene_sets)[sapply(gene_sets, length) >= 4]
 stopifnot(length(keep_sets) >= 3)
 gene_sets <- gene_sets[keep_sets]
 
 cat("Scoring sets:", paste(names(gene_sets), collapse=", "), "\n")
 
-# Remove old columns if re-running
 old <- c(paste0(names(gene_sets), "_score"))
 old <- intersect(old, colnames(immune_clean@meta.data))
 if (length(old) > 0) immune_clean@meta.data[, old] <- NULL
 
-# ----------------------------
+
 # 14B) Add module scores
-# ----------------------------
+
 # AddModuleScore expects a LIST of feature lists; name creates *_1 columns
 immune_clean <- AddModuleScore(immune_clean, features = gene_sets, name = "STATE_")
 
@@ -850,18 +835,18 @@ for (i in seq_along(gene_sets)) {
 saveRDS(immune_clean, file.path(OUTDIR, "STEP14A_immune_clean_withStateScores.rds"))
 cat("Saved:", file.path(OUTDIR, "STEP14A_immune_clean_withStateScores.rds"), "\n")
 
-# ----------------------------
-# 14C) UMAP feature plots (nice for capstone)
-# ----------------------------
+
+# 14C) UMAP feature plots 
+
 features_to_plot <- paste0(names(gene_sets), "_score")
 p_umap <- FeaturePlot(immune_clean, features = features_to_plot, reduction="wnn.umap", ncol=3) &
   theme(plot.title = element_text(size=10))
 print(p_umap)
 ggsave(file.path(OUTDIR, "STEP14A_stateScores_umap.png"), p_umap, width=14, height=8)
 
-# ----------------------------
-# 14D) Donor-level plots (GLOBAL)
-# ----------------------------
+
+# 14D) Donor-level plots 
+
 df <- immune_clean@meta.data %>%
   select(donor, cell_type, all_of(features_to_plot)) %>%
   tidyr::pivot_longer(cols = all_of(features_to_plot),
@@ -880,10 +865,10 @@ print(p_donor_global)
 ggsave(file.path(OUTDIR, "STEP14A_stateScores_byDonor_GLOBAL.png"),
        p_donor_global, width=14, height=8)
 
-# ----------------------------
-# 14E) Donor-level plots WITHIN major compartments (most important)
-# ----------------------------
-# Define major compartments from your cell_type labels (NO assumptions: use pattern matching)
+
+# 14E) Donor-level plots WITHIN major compartments 
+
+# Define major compartments from your cell_type labels
 df$compartment <- dplyr::case_when(
   df$cell_type %in% c(
     "Naive CD4 T (LEF1/TCF7/CCR7-like)",
@@ -931,9 +916,9 @@ print(p_by_comp)
 ggsave(file.path(OUTDIR, "STEP14A_stateScores_byDonor_WITHINcompartments.png"),
        p_by_comp, width=16, height=10)
 
-# ----------------------------
+
 # 14F) Stats: donor differences (Kruskal-Wallis per program)
-# ----------------------------
+
 stats_kw <- df2 %>%
   group_by(program, compartment) %>%
   summarise(
@@ -955,12 +940,12 @@ stats_kw <- readr::read_csv(stats_file, show_col_types = FALSE)
 # 2) Clean names + compute -log10(p)
 stats_kw2 <- stats_kw %>%
   mutate(
-    program = str_replace(program, "_score$", ""),   # remove suffix
+    program = str_replace(program, "_score$", ""),   
     neglog10p = -log10(p_kw),
-    neglog10p_cap = pmin(neglog10p, 50)              # cap so extreme p-values don't blow up the color scale
+    neglog10p_cap = pmin(neglog10p, 50)             
   )
 
-# 3) Order programs by strongest signal overall (nice heatmap ordering)
+# 3) Order programs by strongest signal overall 
 program_order <- stats_kw2 %>%
   group_by(program) %>%
   summarise(max_sig = max(neglog10p, na.rm=TRUE), .groups="drop") %>%
@@ -997,10 +982,10 @@ obj_file <- file.path(OUTDIR, "STEP14A_immune_clean_withStateScores.rds")
 stopifnot(file.exists(obj_file))
 immune_clean <- readRDS(obj_file)
 
-# Programs we scored (columns end with _score)
+# Programs  scored (columns end with _score)
 score_cols <- grep("_score$", colnames(immune_clean@meta.data), value = TRUE)
 
-# Build long table with compartment assignment (same logic you used)
+# Build long table with compartment assignment 
 df <- immune_clean@meta.data %>%
   dplyr::select(donor, cell_type, all_of(score_cols)) %>%
   tidyr::pivot_longer(cols = all_of(score_cols),
@@ -1024,7 +1009,7 @@ med_by_donor <- df %>%
   group_by(program, compartment, donor) %>%
   summarise(med = median(score, na.rm=TRUE), .groups="drop")
 
-# Effect direction summary: which donor highest/lowest + effect size (max median - min median)
+#  which donor highest/lowest + effect size (max median - min median)
 effect_summary <- med_by_donor %>%
   group_by(program, compartment) %>%
   summarise(
@@ -1036,7 +1021,7 @@ effect_summary <- med_by_donor %>%
     .groups="drop"
   )
 
-# Join with KW p-values from Step14F
+# Join with KW p-values 
 stats_file <- file.path(OUTDIR, "STEP14A_Kruskal_byDonor_withinCompartments.csv")
 stats_kw <- readr::read_csv(stats_file, show_col_types = FALSE) %>%
   mutate(program = str_replace(program, "_score$", ""))
@@ -1046,7 +1031,7 @@ top_hits <- stats_kw %>%
   arrange(p_kw) %>%
   mutate(neglog10p = -log10(p_kw))
 
-# Save + display top 15
+# Save 
 write.csv(top_hits, file.path(OUTDIR, "STEP14F_TOP_hits_with_direction.csv"), row.names = FALSE)
 cat("Saved:", file.path(OUTDIR, "STEP14F_TOP_hits_with_direction.csv"), "\n")
 
@@ -1055,31 +1040,27 @@ print(top_hits %>%
         head(15))
 
 
-# ----------------------------
-# STEP 15) Single-gene validation of donor differences (NO assumptions)
-# Goal: confirm module-score donor effects with actual marker genes
-# ----------------------------
+
+# STEP 15) Single-gene validation of donor differences 
 
 
-# Load state-scored object (same one used for Step14)
+# Load state-scored object 
 obj_file <- file.path(OUTDIR, "STEP14A_immune_clean_withStateScores.rds")
 stopifnot(file.exists(obj_file))
 immune_clean <- readRDS(obj_file)
 immune_clean <- JoinLayers(immune_clean)
 DefaultAssay(immune_clean) <- "RNA"
 
-# Sanity
 stopifnot(all(c("donor","cell_type") %in% colnames(immune_clean@meta.data)))
 cat("Cells:", ncol(immune_clean), "\n")
 cat("Donors:", paste(sort(unique(immune_clean$donor)), collapse=", "), "\n")
 cat("Cell types:", length(unique(immune_clean$cell_type)), "\n")
 
-# Helper: safe plotting for genes that exist
+
 genes_present <- function(g) intersect(g, rownames(immune_clean))
 
-# ----------------------------
-# 15A) Define key genes to validate (RNA) - matches Step14 programs
-# ----------------------------
+
+# 15A) Define key genes to validate (RNA) 
 gene_panels <- list(
   CYTOTOXICITY = c("NKG7","GNLY","PRF1","GZMB","GZMH","CTSW","CCL5"),
   EXHAUSTION   = c("PDCD1","LAG3","HAVCR2","TIGIT","CTLA4","TOX"),
@@ -1094,10 +1075,9 @@ cat("\nGenes present per panel:\n")
 print(sapply(gene_panels, length))
 stopifnot(all(sapply(gene_panels, length) >= 3))
 
-# ----------------------------
-# 15B) Define compartments STRICTLY from YOUR cell_type labels
-# (No regex guessing; uses exact labels you created in Step11)
-# ----------------------------
+
+# 15B) Define compartments cell_type labels
+
 meta <- immune_clean@meta.data
 
 meta$compartment <- dplyr::case_when(
@@ -1134,11 +1114,9 @@ immune_clean$compartment <- meta$compartment
 cat("\nCells per compartment:\n")
 print(sort(table(immune_clean$compartment), decreasing = TRUE))
 
-# ----------------------------
-# 15C) Quick reality-check:
-# Some genes should be compartment-enriched (not everywhere).
-# We'll print % expressing for a few representative genes.
-# ----------------------------
+
+# 15C) Quick check:
+
 DefaultAssay(immune_clean) <- "RNA"
 expr_mat <- GetAssayData(immune_clean, layer = "data")
 
@@ -1160,10 +1138,9 @@ pct_by_comp <- lapply(rep_genes, function(g){
 cat("\n% cells expressing (expr>0) by compartment (selected genes):\n")
 print(pct_by_comp %>% arrange(gene, desc(pct_expr)))
 
-# ----------------------------
+
 # 15D) Donor comparison plots WITHIN each compartment for key genes
-# Output: 1 plot per (panel × compartment) that has enough cells
-# ----------------------------
+
 dir.create(OUTDIR, showWarnings = FALSE)
 
 plot_gene_violin <- function(obj, genes, compartment_name, filename_prefix){
@@ -1203,7 +1180,7 @@ plot_gene_violin <- function(obj, genes, compartment_name, filename_prefix){
 }
 
 # Run panels within the compartments where they biologically make sense.
-# (Still NO assumptions: we just run and let the data show patterns.)
+
 compartments_to_run <- c("T_cells","NK_cells","Myeloid","B_cells","DCs")
 
 # For each compartment, run a focused set of panels
@@ -1231,9 +1208,8 @@ for (comp in compartments_to_run) {
 saveRDS(immune_clean, file.path(OUTDIR, "STEP15_immune_clean_with_compartment.rds"))
 cat("Saved checkpoint:", file.path(OUTDIR, "STEP15_immune_clean_with_compartment.rds"), "\n")
 
-# ----------------------------
-# STEP 16) Check myeloid contamination inside T_cells (NO assumptions)
-# ----------------------------
+
+# STEP 16) Check myeloid contamination inside T_cells (
 
 immune_clean <- readRDS(file.path(OUTDIR, "STEP15_immune_clean_with_compartment.rds"))
 immune_clean <- JoinLayers(immune_clean)
@@ -1243,7 +1219,6 @@ DefaultAssay(immune_clean) <- "RNA"
 tobj <- subset(immune_clean, subset = compartment == "T_cells")
 cat("T_cells:", ncol(tobj), "\n")
 
-# A strict myeloid-marker panel (if these are high in T cells, it's contamination/doublets/ambient)
 myeloid_leak <- c("LYZ","LST1","TYROBP","FCER1G","AIF1","S100A8","S100A9","FCN1","C1QA","C1QB","C1QC","APOE")
 myeloid_leak <- intersect(myeloid_leak, rownames(tobj))
 cat("Myeloid-leak genes present:", length(myeloid_leak), "\n")
@@ -1276,7 +1251,7 @@ p <- ggplot(df, aes(x=donor, y=MYELOID_LEAK)) +
 print(p)
 ggsave(file.path(OUTDIR, "STEP16_Tcells_MYELOID_LEAK_byDonor.png"), p, width=10, height=6)
 
-# How many T cells look suspiciously myeloid-like?
+#  T cells look suspiciously myeloid-like
 thr <- median(tobj$MYELOID_LEAK) + 2*sd(tobj$MYELOID_LEAK)
 cat("\nThreshold used (median + 2*sd):", thr, "\n")
 cat("T cells above threshold:", sum(tobj$MYELOID_LEAK > thr), "out of", ncol(tobj), "\n")
@@ -1288,7 +1263,7 @@ immune_clean <- readRDS(file.path(OUTDIR, "STEP15_immune_clean_with_compartment.
 immune_clean <- JoinLayers(immune_clean)
 DefaultAssay(immune_clean) <- "RNA"
 
-# Recompute leak on T cells (so it's reproducible)
+# Recompute  on T cells 
 tobj <- subset(immune_clean, subset = compartment == "T_cells")
 
 myeloid_leak <- c("LYZ","LST1","TYROBP","FCER1G","AIF1",
@@ -1341,18 +1316,17 @@ write.csv(stats_kw2, file.path(OUTDIR, "STEP17_Kruskal_byDonor_withinCompartment
 
 print(stats_kw2)
 
-# ----------------------------
-# STEP 18) FINAL PLOTS (post Step17 cleanup)
-# ----------------------------
 
-# 0) Load cleaned object (post leak removal)
+# STEP 18) FINAL PLOTS 
+
+#  Load cleaned object 
 obj_file <- file.path(OUTDIR, "STEP17_immune_clean_noLeakTcells.rds")
 stopifnot(file.exists(obj_file))
 immune_final <- readRDS(obj_file)
 immune_final <- JoinLayers(immune_final)
 DefaultAssay(immune_final) <- "RNA"
 
-# 0b) Make an output folder for FINAL plots
+#  Make an output folder for FINAL plots
 FINALDIR <- file.path(OUTDIR, "FINAL_PLOTS_STEP18")
 dir.create(FINALDIR, showWarnings = FALSE)
 cat("Saving final plots to:", FINALDIR, "\n")
@@ -1369,9 +1343,9 @@ stopifnot("wnn.umap" %in% Reductions(immune_final))
 cat("Cells:", ncol(immune_final), " | Donors:", length(unique(immune_final$donor)),
     " | Cell types:", length(unique(immune_final$cell_type)), "\n")
 
-# ----------------------------
+
 # 18A) UMAP labeled (cell types)
-# ----------------------------
+
 p_umap_label <- DimPlot(
   immune_final,
   reduction = "wnn.umap",
@@ -1382,9 +1356,9 @@ p_umap_label <- DimPlot(
 
 save_plot2(p_umap_label, "A1_UMAP_celltype_FINAL.png", w=13, h=7)
 
-# ----------------------------
+
 # 18B) Composition by donor (percent)
-# ----------------------------
+
 comp_counts <- table(immune_final$donor, immune_final$cell_type)
 comp_props  <- prop.table(comp_counts, margin = 1) * 100
 comp_df <- as.data.frame(comp_props)
@@ -1407,9 +1381,9 @@ write.csv(as.data.frame(round(comp_props, 3)),
           file.path(FINALDIR, "B1_Composition_percent_FINAL.csv"),
           row.names = FALSE)
 
-# ----------------------------
-# 18C) State score UMAPs (if scores exist)
-# ----------------------------
+
+# 18C) State score UMAPs 
+
 score_cols <- setdiff(
   grep("_score$", colnames(immune_final@meta.data), value = TRUE),
   "doublet_score"
@@ -1428,9 +1402,8 @@ ggsave(file.path(FINALDIR, "C1_StateScores_UMAP_FINAL.png"),
        p_state_umap, width=14, height=8)
 cat("Saved:", file.path(FINALDIR, "C1_StateScores_UMAP_FINAL.png"), "\n")
 
-# ----------------------------
-# 18D) Donor comparison within compartments (boxplots) - KEY FIGURE
-# ----------------------------
+
+# 18D) Donor comparison within compartments (boxplots) 
 df_long <- immune_final@meta.data %>%
   select(donor, compartment, all_of(score_cols)) %>%
   pivot_longer(cols = all_of(score_cols), names_to="program", values_to="score") %>%
@@ -1447,9 +1420,8 @@ p_by_comp <- ggplot(df_long, aes(x=donor, y=score)) +
 
 save_plot2(p_by_comp, "D1_StateScores_byDonor_WITHINcompartments_FINAL.png", w=16, h=10)
 
-# ----------------------------
-# 18E) Kruskal–Wallis heatmap (final)
-# ----------------------------
+
+# 18E) Kruskal–Wallis heatmap 
 stats_kw <- df_long %>%
   group_by(program, compartment) %>%
   summarise(
@@ -1489,9 +1461,9 @@ p_heat <- ggplot(stats_kw, aes(x=compartment, y=program, fill=neglog10p_cap)) +
 
 save_plot2(p_heat, "E2_KW_heatmap_neglog10p_FINAL.png", w=9, h=5)
 
-# ----------------------------
+
 # 18F) Direction table: which donor high/low (final)
-# ----------------------------
+
 med_by_donor <- df_long %>%
   group_by(program, compartment, donor) %>%
   summarise(med = median(score, na.rm=TRUE), .groups="drop")
