@@ -91,6 +91,6 @@ Tested with R ≥ 4.3 and Seurat v5.
 2. Update the working directory path on line 15 of the script
 3. Run: `Rscript analysis/NSCLC_immune_pipeline.R`
 
-Outputs go to a timestamped `RUN_YYYYMMDD_HHMMSS/` folder. Final publication figures are in `FINAL_PLOTS_STEP18/`.
+
 
 ---
